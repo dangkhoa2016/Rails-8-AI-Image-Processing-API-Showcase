@@ -1,0 +1,92 @@
+{
+  "schema": 2,
+  "notes": [
+    "WeMM demo assets are byte-for-byte copies of previously published project release assets.",
+    "Wikimedia Commons person/puppy inputs are CC0 and include source-page provenance.",
+    "The public speaker and hat inputs are CC0 1.0 Wikimedia Commons assets; runtime-sized JPEG derivatives preserve the source image content for API inference."
+  ],
+  "assets": [
+    {
+      "file": "assets/input/tower.png",
+      "role": "showcase-input",
+      "source_type": "project-release-authority",
+      "source_repository": "dangkhoa2016/Tencent-WeMM-Embedding-9B-Kaggle-T4x2-GPU",
+      "source_release": "v1.0.0",
+      "original": "01-lakeside-historic-tower.png",
+      "sha256": "48ab6d3bac349bacb901662456d22a7003ff249f182ce1424373c41668ae96a6"
+    },
+    {
+      "file": "assets/input/pho.png",
+      "role": "showcase-input",
+      "source_type": "project-release-authority",
+      "source_repository": "dangkhoa2016/Tencent-WeMM-Embedding-9B-Kaggle-T4x2-GPU",
+      "source_release": "v1.0.0",
+      "original": "02-vietnamese-noodle-soup.png",
+      "sha256": "cfa615380d1966313afea5971b25ab052098ae1f395e5b255517524d48cb7b19"
+    },
+    {
+      "file": "assets/input/cat.png",
+      "role": "showcase-input",
+      "source_type": "project-release-authority",
+      "source_repository": "dangkhoa2016/Tencent-WeMM-Embedding-9B-Kaggle-T4x2-GPU",
+      "source_release": "v1.0.0",
+      "original": "03-tabby-white-kitten.png",
+      "sha256": "7cef84ce76a28c73f0a274995967ca88f25f562df7f02d4de37d2b7d98336a18"
+    },
+    {
+      "file": "assets/input/halong.png",
+      "role": "showcase-input",
+      "source_type": "project-release-authority",
+      "source_repository": "dangkhoa2016/Tencent-WeMM-Embedding-9B-Kaggle-T4x2-GPU",
+      "source_release": "v1.0.0",
+      "original": "04-turquoise-karst-bay.png",
+      "sha256": "0da19f21438db56e39ec9bc99453035a8a5b2723998d71a1c08ffc7a0e5ca7fc"
+    },
+    {
+      "file": "assets/input/person-smiling-cc0.jpg",
+      "role": "showcase-input",
+      "source_type": "wikimedia-commons",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Smiling_woman_pink_shirt.jpg",
+      "license": "CC0 1.0",
+      "description": "Smiling woman in pink shirt"
+    },
+    {
+      "file": "assets/input/dog-puppy-white-cc0.jpg",
+      "role": "showcase-input",
+      "source_type": "wikimedia-commons",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Puppy_Dog_on_White.jpg",
+      "license": "CC0 1.0",
+      "description": "Puppy dog on white background"
+    },
+    {
+      "file": "assets/input/horse-white-cc0.jpg",
+      "role": "showcase-input",
+      "source_type": "wikimedia-commons",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Horses_white.jpg",
+      "license": "CC0 1.0",
+      "description": "White horse in a field"
+    },
+    {
+      "file": "assets/input/speaker-bookshelf-pair-cc0.jpg",
+      "role": "showcase-input",
+      "source_type": "wikimedia-commons",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Altec_Lansing_Bookshelf_Speakers.jpg",
+      "license": "CC0 1.0",
+      "description": "Pair of wooden bookshelf speakers on a light background",
+      "sha256": "e402963495e3c08e37ae2053d397c382e1280e03356f0fbc330df9ea64f6d51a",
+      "runtime_file": "assets/input/speaker-bookshelf-pair-cc0-1280.jpg",
+      "runtime_sha256": "3d106c24d34f1ccaa4b7c33806bdc0b0c3340005db4c800b431b481ea1bf188d"
+    },
+    {
+      "file": "assets/input/hat-white-cowboy-cc0.jpg",
+      "role": "showcase-input",
+      "source_type": "wikimedia-commons",
+      "source_page": "https://commons.wikimedia.org/wiki/File:White_cowboy_hat_from_Calgary.jpg",
+      "license": "CC0 1.0",
+      "description": "White cowboy hat photographed on a textured floor",
+      "sha256": "1e38ce7fd433f1ee0a8a6f8220d59db5a9011b602a970eb96bcd13a7cbdc2fce",
+      "runtime_file": "assets/input/hat-white-cowboy-cc0-1280.jpg",
+      "runtime_sha256": "10126b38d7a82ed7cc7e1a9a85023b42f9f1a15053caeb2a1396490920abc5ec"
+    }
+  ]
+}
