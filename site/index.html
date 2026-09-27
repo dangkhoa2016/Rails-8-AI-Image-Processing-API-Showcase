@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Visual showcase for Rails 8 AI Image Processing API — BiRefNet background removal, MobileSAM segmentation, and deterministic image processing.">
+<title>Rails 8 AI Image Processing API — Visual Showcase</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+<style>
+:root{--bg:#071019;--panel:#0f1b28;--panel2:#142334;--text:#eef7ff;--muted:#9db0c2;--line:#26384a;--cyan:#67e8f9;--blue:#38bdf8;--green:#4ade80;--orange:#fb923c;--shadow:0 24px 80px rgba(0,0,0,.34)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 84% -8%,#183b5e 0,#091522 34%,#050b11 78%);color:var(--text);font:15px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:inherit;text-decoration:none}img{display:block;max-width:100%}.wrap{max-width:1240px;margin:auto;padding:0 22px}
+nav{position:sticky;top:0;z-index:30;background:rgba(5,11,17,.78);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}
+.navin{height:68px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{font-weight:850;letter-spacing:-.02em}.brand span{color:var(--cyan)}
+.links{display:flex;gap:22px;color:var(--muted);font-size:13px}.links a:hover{color:#fff}.navright{display:flex;align-items:center;gap:16px}.langSwitch{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:#0b1722}.langSwitch button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:850;padding:6px 10px;border-radius:999px;cursor:pointer}.langSwitch button.active{background:#fff;color:#071019}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-size:12px;font-weight:850;letter-spacing:.13em;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 20px var(--green)}
+.hero{padding:82px 0 58px;display:grid;grid-template-columns:.9fr 1.1fr;gap:42px;align-items:center}
+h1{font-size:clamp(36px,4.6vw,60px);line-height:1.02;letter-spacing:-.045em;margin:16px 0 22px}.lede{color:var(--muted);font-size:18px;max-width:590px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{padding:12px 17px;border-radius:12px;border:1px solid var(--line);background:#101f2e;font-weight:760}.btn.primary{background:linear-gradient(135deg,#0ea5e9,#2563eb);border-color:transparent}
+.heroCard,.card{background:linear-gradient(180deg,rgba(20,35,52,.98),rgba(13,25,38,.98));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow);border-radius:22px;overflow:hidden}
+.compare{position:relative;aspect-ratio:3/2;overflow:hidden;background:#0a121a;cursor:ew-resize;user-select:none;-webkit-user-select:none;touch-action:none}.compare *{user-select:none;-webkit-user-select:none}.compare img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;user-drag:none}.compare .after{clip-path:inset(0 0 0 50%)}.divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;pointer-events:none}.knob{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;color:#071019;display:grid;place-items:center;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.32);pointer-events:none}
+.labels{position:absolute;left:16px;right:16px;top:16px;display:flex;justify-content:space-between;font-size:11px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.labels span{background:rgba(4,9,14,.72);padding:5px 8px;border-radius:8px}
+.heroMeta{display:flex;justify-content:space-between;gap:20px;padding:15px 18px;color:var(--muted);font-size:13px}
+section{padding:58px 0}.sectionHead{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:26px}.sectionHead h2{font-size:clamp(30px,4vw,48px);letter-spacing:-.04em;margin:0}.sectionHead p{color:var(--muted);max-width:520px;margin:0}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.galleryGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cardBody{padding:18px}.cardBody h3{font-size:21px;margin:10px 0 5px}.cardBody p{color:var(--muted);margin:0}.tag{display:inline-block;padding:4px 8px;border-radius:999px;background:#0b3341;color:var(--cyan);font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.07em}
+.zoom{position:relative;display:block;overflow:hidden;background:#081018}.zoom:after{content:"↗";position:absolute;right:12px;top:12px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(2,8,13,.72);border:1px solid rgba(255,255,255,.16);font-weight:900;opacity:.85}.zoom img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}.zoom:hover img{transform:scale(1.025)}
+.checker{background-color:#fff;background-image:linear-gradient(45deg,#d8d8d8 25%,transparent 25%),linear-gradient(-45deg,#d8d8d8 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#d8d8d8 75%),linear-gradient(-45deg,transparent 75%,#d8d8d8 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}.checker img{object-fit:contain}
+.bgTriptych .zoom{aspect-ratio:4/3}.segGrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.promptCard{position:relative}.promptCard img{width:100%;aspect-ratio:3/2;object-fit:cover}.boxPrompt{position:absolute;left:13.7%;top:2%;width:73.6%;height:95.7%;border:4px solid var(--blue);border-radius:14px;box-shadow:0 0 0 9999px rgba(3,8,12,.12)}.pointPrompt{position:absolute;left:50.8%;top:50.8%;width:22px;height:22px;border:4px solid #fff;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(0,0,0,.28)}.promptLabel{position:absolute;left:16px;top:16px;padding:5px 8px;border-radius:7px;background:var(--blue);color:#042235;font-size:11px;font-weight:900}
+.maskPair{display:grid;grid-template-columns:1fr 1fr}.maskPair .zoom{aspect-ratio:3/2}.maskPair img{object-fit:contain;background:#05080b}.animalGrid{grid-template-columns:1fr;align-items:stretch}.animalGrid .card{display:flex;flex-direction:column}.animalGrid .cardBody{display:flex;flex-direction:column;flex:1}.animalGrid .cardBody .codeBtn{margin-top:auto;align-self:flex-start}.animalFlow{display:grid;grid-template-columns:repeat(3,1fr)}.animalFlow .zoom{aspect-ratio:4/5}.animalFlow img{width:100%;height:100%;object-fit:cover}.animalFlow .zoom:nth-child(3) img{object-fit:contain;background:#05080b}.caseTriptych{display:grid;grid-template-columns:repeat(3,1fr)}.caseTriptych .zoom{aspect-ratio:4/5}.caseTriptych img{width:100%;height:100%;object-fit:cover}.caseTriptych .zoom:nth-child(n+2) img{object-fit:contain;background:#05080b}
+.transformPair{display:grid;grid-template-columns:1fr 1fr}.transformPair .zoom{aspect-ratio:1/1}.transformPair img{object-fit:cover}.cap{position:absolute;left:10px;bottom:10px;background:rgba(0,0,0,.68);padding:5px 8px;border-radius:7px;font-size:11px;font-weight:820}
+.featureStrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-top:28px}.feature{min-width:0;padding:16px;border-radius:15px;border:1px solid var(--line);background:rgba(12,24,35,.78)}.feature b{display:block;font-size:20px}.feature span{display:block;color:var(--muted);font-size:12px;line-height:1.45}
+.demoIndex{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.demoIndex a{display:block;padding:16px;border:1px solid var(--line);border-radius:15px;background:#0b1722}.demoIndex strong{display:block;margin-bottom:3px}.demoIndex span{color:var(--muted);font-size:12px}
+.note{margin-top:24px;padding:18px;border:1px solid #2f4255;background:#0b1722;border-radius:14px;color:var(--muted)}.verificationLink{display:inline-flex;margin-top:10px;color:var(--cyan);font-weight:800;text-decoration:none}.verificationLink:hover{text-decoration:underline}.processingGrid{grid-template-columns:1fr}.gslide-desc{background:#0d1a27!important;color:#eef7ff!important}.gslide-desc .gslide-title{color:#ffffff!important}.gslide-desc .gslide-description{color:#c6d3df!important}.gslide-desc *{text-shadow:none!important}.codeBtnGroup{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}.codeBtnGroup .codeBtn{margin-top:0}.heroMeta .codeBtn{margin-top:0;padding:6px 10px;font-size:12px}.codeBtn{margin-top:15px;display:inline-flex;align-items:center;gap:8px;border:1px solid #35516b;background:#0a1824;color:#dff7ff;border-radius:10px;padding:9px 12px;font:inherit;font-size:13px;font-weight:800;cursor:pointer}.codeBtn:hover{border-color:var(--cyan);background:#102434}.codeBtn svg{width:16px;height:16px}.codeModal{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.7);padding:20px}.codeModal.open{display:flex}.codeSheet{width:min(900px,100%);max-height:86vh;overflow:auto;background:#09131d;border:1px solid #31475b;border-radius:20px 20px 14px 14px;box-shadow:0 30px 100px rgba(0,0,0,.55)}.codeHead{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;background:#0d1a27;border-bottom:1px solid var(--line);z-index:1}.codeHead h3{margin:0;font-size:18px}.codeActions{display:flex;gap:8px}.codeIconBtn{border:1px solid var(--line);background:#132435;color:#fff;border-radius:9px;padding:8px 11px;cursor:pointer;font:inherit;font-weight:750}.codeBody{padding:18px}.codeHint{color:var(--muted);margin:0 0 12px}.codeBody pre{margin:0;overflow:auto;background:#02070b;border:1px solid #24374a;border-radius:13px;padding:18px;color:#d8f3ff;font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}.codeSafety{margin-top:12px;color:var(--muted);font-size:12px}footer{padding:44px 0 60px;color:var(--muted);border-top:1px solid rgba(255,255,255,.07)}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.galleryGrid,.grid3{grid-template-columns:1fr}.segGrid,.grid2{grid-template-columns:1fr}.featureStrip,.demoIndex{grid-template-columns:repeat(2,1fr)}.links{display:none}}@media(max-width:560px){.featureStrip,.demoIndex{grid-template-columns:1fr}.maskPair,.transformPair{grid-template-columns:1fr}.hero{padding-top:52px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap navin"><div class="brand">Rails 8 <span>AI Image Processing</span></div><div class="navright"><div class="links"><a href="#background">Background removal</a><a href="#segmentation">Object selection</a><a href="#processing">Transforms</a><a href="#all-demos">Gallery</a></div><div class="langSwitch" aria-label="Language"><button type="button" data-lang="en">EN</button><button type="button" data-lang="vi">VI</button></div></div></div></nav>
+
+<main class="wrap">
+<section class="hero">
+  <div>
+    <div class="eyebrow"><span class="dot"></span>Real API outputs</div>
+    <h1>AI-powered image processing behind one Rails 8 API.</h1>
+    <p class="lede">Remove backgrounds, select people or objects, and transform images through simple API requests. Every example below uses a real API response so you can see what each capability actually does.</p>
+    <div class="actions"><a class="btn primary" href="#background">See what the API can do</a><a class="btn" href="https://github.com/dangkhoa2016/Rails-8-AI-Image-Processing-API">Application source</a></div>
+    <div class="featureStrip"><div class="feature"><b>BiRefNet</b><span>Keep the subject, remove the background</span></div><div class="feature"><b>MobileSAM</b><span>Select a person or object from a click or box</span></div><div class="feature"><b>libvips</b><span>Resize, crop and enhance predictably</span></div><div class="feature"><b>Rails 8</b><span>One API surface for the workflow</span></div></div>
+  </div>
+  <div class="heroCard">
+    <div class="compare" id="heroCompare">
+      <img src="assets/speaker-input.jpg" alt="Original speaker pair">
+      <img class="after" src="assets/speaker-soft-background.png" alt="Speaker pair after BiRefNet background removal">
+      <div class="divider"></div><div class="knob">↔</div>
+      <div class="labels"><span>Original</span><span>BiRefNet</span></div>
+    </div>
+    <div class="heroMeta"><span>Background removed and replaced with a neutral backdrop</span><span>Drag to compare</span><button type="button" class="codeBtn" data-code="speaker-soft-background">View code</button></div>
+  </div>
+</section>
+
+<section id="background">
+  <div class="sectionHead"><div><div class="eyebrow">Background removal</div><h2>Keep the product. Remove the scene around it.</h2></div><p>BiRefNet separates the main subject from its surroundings. The API can return a transparent PNG or place the isolated subject onto a new background.</p></div>
+  <div class="galleryGrid bgTriptych">
+    <article class="card"><a class="zoom glightbox" data-gallery="background" data-title="Original product photo" href="assets/speaker-input.jpg"><img src="assets/speaker-input.jpg" alt="Original speaker pair"></a><div class="cardBody"><span class="tag">Input</span><h3>Original photo</h3><p>The speakers are still part of their original scene.</p></div></article>
+    <article class="card"><a class="zoom glightbox checker" data-gallery="background" data-title="Transparent PNG output" href="assets/speaker-transparent.png"><img src="assets/speaker-transparent.png" alt="Transparent speaker-pair output"></a><div class="cardBody"><span class="tag">BiRefNet</span><h3>Transparent cutout</h3><p>The surrounding background is removed while the product remains.</p><button type="button" class="codeBtn" data-code="remove-background">View code</button></div></article>
+    <article class="card"><a class="zoom glightbox" data-gallery="background" data-title="Feathered neutral-background composite" href="assets/speaker-soft-background.png"><img src="assets/speaker-soft-background.png" alt="Speaker pair on soft background"></a><div class="cardBody"><span class="tag">Composite</span><h3>New neutral background</h3><p>The isolated product is placed onto a clean neutral background.</p><button type="button" class="codeBtn" data-code="speaker-soft-background">View code</button></div></article>
+  </div>
+  <div style="height:48px"></div>
+  <div class="sectionHead"><div><div class="eyebrow">Another object shape</div><h2>The same background-removal API on a different object.</h2></div><p>The hat has a wider curved outline, showing how the same endpoint handles a different shape and material.</p></div>
+  <div class="galleryGrid bgTriptych">
+    <article class="card"><a class="zoom glightbox" data-gallery="hat-background" data-title="Hat — original photo" href="assets/hat-input.jpg"><img src="assets/hat-input.jpg" alt="Original hat photo"></a><div class="cardBody"><span class="tag">Input</span><h3>Original hat photo</h3><p>Large curved silhouette on a textured wooden background.</p></div></article>
+    <article class="card"><a class="zoom glightbox checker" data-gallery="hat-background" data-title="Hat — transparent PNG" href="assets/hat-transparent.png"><img src="assets/hat-transparent.png" alt="Hat transparent cutout"></a><div class="cardBody"><span class="tag">BiRefNet</span><h3>Transparent hat cutout</h3><p>A second object-removal case with a substantially different outline.</p><button type="button" class="codeBtn" data-code="hat-transparent">View code</button></div></article>
+    <article class="card"><a class="zoom glightbox" data-gallery="hat-background" data-title="Hat — soft neutral composite" href="assets/hat-soft-background.png"><img src="assets/hat-soft-background.png" alt="Hat on neutral background"></a><div class="cardBody"><span class="tag">Composite</span><h3>Neutral editorial backdrop</h3><p>Feathered output recomposited onto a clean neutral background.</p><button type="button" class="codeBtn" data-code="hat-soft-background">View code</button></div></article>
+  </div>
+</section>
+
+
+<section id="segmentation">
+  <div class="sectionHead">
+    <div><div class="eyebrow">Object selection with MobileSAM</div><h2>Three animals. Three clear selection examples.</h2></div>
+    <p>These examples separate the interaction from the result: the first image shows the prompt you give MobileSAM, the second highlights what the model selected, and the third is the raw black-and-white mask returned by the API.</p>
+  </div>
+  <div class="grid3 animalGrid">
+    <article class="card">
+      <div class="animalFlow">
+        <a class="zoom glightbox" data-gallery="dog-point" data-title="Dog — point prompt" href="assets/dog-point-prompt.webp"><img src="assets/dog-point-prompt.webp" alt="Green point prompt placed on the puppy"><span class="cap">1 · Point prompt</span></a>
+        <a class="zoom glightbox" data-gallery="dog-point" data-title="Dog — selection preview" href="assets/dog-point-selection.webp"><img src="assets/dog-point-selection.webp" alt="Puppy selected while the background is dimmed"><span class="cap">2 · Selection</span></a>
+        <a class="zoom glightbox" data-gallery="dog-point" data-title="Dog — MobileSAM point mask" href="assets/dog-point-mask.png"><img src="assets/dog-point-mask.png" alt="Raw MobileSAM point mask for puppy"><span class="cap">3 · API mask</span></a>
+      </div>
+      <div class="cardBody"><span class="tag">Dog · Point</span><h3>Choose a subject with one click</h3><p>A single positive point tells MobileSAM which nearby object the user means. This is the simplest interaction for a click-to-select interface.</p><button type="button" class="codeBtn" data-code="dog-point">View code</button></div>
+    </article>
+
+    <article class="card">
+      <div class="animalFlow">
+        <a class="zoom glightbox" data-gallery="cat-box" data-title="Cat — box prompt" href="assets/cat-box-prompt.webp"><img src="assets/cat-box-prompt.webp" alt="Blue bounding box around the cat"><span class="cap">1 · Box prompt</span></a>
+        <a class="zoom glightbox" data-gallery="cat-box" data-title="Cat — selection preview" href="assets/cat-box-selection.webp"><img src="assets/cat-box-selection.webp" alt="Cat selected while the surrounding area is dimmed"><span class="cap">2 · Selection</span></a>
+        <a class="zoom glightbox" data-gallery="cat-box" data-title="Cat — MobileSAM box mask" href="assets/cat-box-mask.png"><img src="assets/cat-box-mask.png" alt="Raw MobileSAM box mask for cat"><span class="cap">3 · API mask</span></a>
+      </div>
+      <div class="cardBody"><span class="tag">Cat · Box</span><h3>Choose a subject with a bounding box</h3><p>The box narrows the search region around the cat. This interaction fits crop tools, annotation UIs, and workflows where the user can drag a rectangle.</p><button type="button" class="codeBtn" data-code="cat-box">View code</button></div>
+    </article>
+
+    <article class="card">
+      <div class="animalFlow">
+        <a class="zoom glightbox" data-gallery="horse-point" data-title="Horse — point prompt in a multi-horse scene" href="assets/horse-point-prompt.webp"><img src="assets/horse-point-prompt.webp" alt="Green point prompt on the foreground white horse"><span class="cap">1 · Point prompt</span></a>
+        <a class="zoom glightbox" data-gallery="horse-point" data-title="Horse — selection preview" href="assets/horse-point-selection.webp"><img src="assets/horse-point-selection.webp" alt="Foreground white horse selected while other horses are dimmed"><span class="cap">2 · Selection</span></a>
+        <a class="zoom glightbox" data-gallery="horse-point" data-title="Horse — MobileSAM point mask" href="assets/horse-point-mask.png"><img src="assets/horse-point-mask.png" alt="Raw MobileSAM point mask for foreground horse"><span class="cap">3 · API mask</span></a>
+      </div>
+      <div class="cardBody"><span class="tag">Horse · Point</span><h3>Select one animal from a busier scene</h3><p>Several horses are visible, but the positive point targets the white horse in front. This makes the purpose of a prompt much clearer than an image containing only one obvious subject.</p><button type="button" class="codeBtn" data-code="horse-point">View code</button></div>
+    </article>
+  </div>
+  <div class="note"><strong>How to read these examples.</strong> The prompt image shows what the user provides. The selection preview is only a visual aid for this showcase. The black-and-white mask is the actual pixel-level MobileSAM output used by downstream code.</div>
+</section>
+
+<!-- PEOPLE_ANIMALS_START -->
+<section id="people-animals">
+  <div class="sectionHead">
+    <div><div class="eyebrow">A human subject</div><h2>Background removal and segmentation solve different problems.</h2></div>
+    <p>The same portrait makes the distinction easy to see: BiRefNet changes the scene around the person, while MobileSAM identifies the pixels that belong to the person.</p>
+  </div>
+  <article class="card">
+    <div class="caseTriptych">
+      <a class="zoom glightbox" data-gallery="person-case" data-title="Person — original CC0 portrait" href="assets/person-input.jpg"><img src="assets/person-input.jpg" alt="Original person portrait"><span class="cap">Original</span></a>
+      <a class="zoom glightbox" data-gallery="person-case" data-title="Person — BiRefNet background replacement" href="assets/person-soft-background.png"><img src="assets/person-soft-background.png" alt="Person with original background replaced"><span class="cap">BiRefNet</span></a>
+      <a class="zoom glightbox" data-gallery="person-case" data-title="Person — MobileSAM box mask" href="assets/person-box-mask.png"><img src="assets/person-box-mask.png" alt="MobileSAM person mask"><span class="cap">MobileSAM mask</span></a>
+    </div>
+    <div class="cardBody"><span class="tag">Person</span><h3>One photo, two different AI tasks</h3><p>Use background removal when you want a cutout or a new scene. Use segmentation when you need a mask that tells software exactly which pixels belong to the selected subject.</p><div class="codeBtnGroup"><button type="button" class="codeBtn" data-code="person-background">View BiRefNet code</button><button type="button" class="codeBtn" data-code="person-segmentation">View MobileSAM code</button></div></div>
+  </article>
+</section>
+<!-- PEOPLE_ANIMALS_END -->
+
+<section id="processing">
+  <div class="sectionHead"><div><div class="eyebrow">Predictable image transformations</div><h2>Resize, crop, enhance, and export predictably.</h2></div><p>These operations do not use an AI model. libvips performs repeatable resize, crop, color, sharpening, tint, and WebP transformations.</p></div>
+  <div class="grid3 processingGrid">
+    <article class="card"><div class="transformPair"><a class="zoom glightbox" data-gallery="food" data-title="Pho — original" href="assets/pho-input.png"><img src="assets/pho-input.png" alt="Pho original"><span class="cap">Original</span></a><a class="zoom glightbox" data-gallery="food" data-title="Pho — enhanced square crop" href="assets/pho-enhanced.webp"><img src="assets/pho-enhanced.webp" alt="Pho enhanced"><span class="cap">720×720</span></a></div><div class="cardBody"><span class="tag">Food</span><h3>Social-ready square crop</h3><p>Resize-to-fill plus restrained contrast, saturation, sharpening, and WebP output.</p><button type="button" class="codeBtn" data-code="process-food">View code</button></div></article>
+    <article class="card"><div class="transformPair"><a class="zoom glightbox" data-gallery="travel" data-title="Hạ Long — original" href="assets/halong-input.png"><img src="assets/halong-input.png" alt="Hạ Long original"><span class="cap">Original</span></a><a class="zoom glightbox" data-gallery="travel" data-title="Hạ Long — cinematic 16:9" href="assets/halong-cinematic.webp"><img src="assets/halong-cinematic.webp" alt="Hạ Long cinematic"><span class="cap">960×540</span></a></div><div class="cardBody"><span class="tag">Travel</span><h3>Cinematic hero image</h3><p>A 16:9 crop with subtle tonal enhancement for web hero placement.</p><button type="button" class="codeBtn" data-code="process-travel">View code</button></div></article>
+    <article class="card"><div class="transformPair"><a class="zoom glightbox" data-gallery="architecture" data-title="Tower — original" href="assets/tower-input.png"><img src="assets/tower-input.png" alt="Tower original"><span class="cap">Original</span></a><a class="zoom glightbox" data-gallery="architecture" data-title="Tower — warm editorial treatment" href="assets/tower-warm.webp"><img src="assets/tower-warm.webp" alt="Tower warm"><span class="cap">Warm</span></a></div><div class="cardBody"><span class="tag">Architecture</span><h3>Warm editorial treatment</h3><p>Resize, contrast, restrained tint, sharpening, and WebP export in one request.</p><button type="button" class="codeBtn" data-code="process-architecture">View code</button></div></article>
+  </div>
+</section>
+
+<section id="all-demos">
+  <div class="sectionHead"><div><div class="eyebrow">Explore the outputs</div><h2>Open any result at full resolution.</h2></div><p>Each item opens in a lightbox with zoom, navigation, and its original pixel dimensions.</p></div>
+  <div class="demoIndex">
+    <a class="glightbox" data-gallery="all" data-title="BiRefNet — transparent product cutout" href="assets/speaker-transparent.png"><strong>Transparent cutout</strong><span>BiRefNet · PNG</span></a>
+    <a class="glightbox" data-gallery="all" data-title="BiRefNet — soft catalog background" href="assets/speaker-soft-background.png"><strong>Soft product composite</strong><span>BiRefNet · feathered</span></a>
+    <a class="glightbox" data-gallery="all" data-title="Hat — transparent object cutout" href="assets/hat-transparent.png"><strong>Hat cutout</strong><span>BiRefNet · object</span></a>
+    <a class="glightbox" data-gallery="all" data-title="Hat — soft neutral composite" href="assets/hat-soft-background.png"><strong>Hat composite</strong><span>BiRefNet · feathered</span></a>
+    <a class="glightbox" data-gallery="all" data-title="Pho — enhanced square crop" href="assets/pho-enhanced.webp"><strong>Food enhancement</strong><span>720×720 · WebP</span></a>
+    <a class="glightbox" data-gallery="all" data-title="Hạ Long — cinematic crop" href="assets/halong-cinematic.webp"><strong>Travel hero</strong><span>960×540 · WebP</span></a>
+    <a class="glightbox" data-gallery="all" data-title="Tower — warm editorial treatment" href="assets/tower-warm.webp"><strong>Architecture treatment</strong><span>960×540 · WebP</span></a>
+  <!-- PEOPLE_ANIMALS_INDEX_START -->
+    <a class="glightbox" data-gallery="all" data-title="Person — BiRefNet background replacement" href="assets/person-soft-background.png"><strong>Person background replacement</strong><span>BiRefNet · portrait</span></a>
+    <a class="glightbox" data-gallery="all" data-title="Person — MobileSAM box mask" href="assets/person-box-mask.png"><strong>Person segmentation mask</strong><span>MobileSAM · box</span></a>
+    <a class="glightbox" data-gallery="all" data-title="Dog — point selection preview" href="assets/dog-point-selection.webp"><strong>Dog point selection</strong><span>MobileSAM · point</span></a>
+    <a class="glightbox" data-gallery="all" data-title="Cat — box selection preview" href="assets/cat-box-selection.webp"><strong>Cat box selection</strong><span>MobileSAM · box</span></a>
+    <a class="glightbox" data-gallery="all" data-title="Horse — point selection preview" href="assets/horse-point-selection.webp"><strong>Horse point selection</strong><span>MobileSAM · multi-subject scene</span></a>
+<!-- PEOPLE_ANIMALS_INDEX_END -->
+  </div>
+  <div class="note"><strong>About this showcase:</strong> These are real API outputs presented as visual demonstrations, not model-quality benchmarks. Reproducible API tests, verification reports, and integrity evidence are maintained separately in the project's public verification repository.<br><a class="verificationLink" href="https://github.com/dangkhoa2016/Rails-8-AI-Image-Processing-API-Community-Acceptance-Kit" target="_blank" rel="noopener noreferrer">Verification &amp; reproducibility → Public verification repository</a></div>
+</section>
+</main>
+
+
+<div class="codeModal" id="codeModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="codeModalTitle">
+  <div class="codeSheet">
+    <div class="codeHead">
+      <h3 id="codeModalTitle">API example</h3>
+      <div class="codeActions">
+        <button type="button" class="codeIconBtn" id="copyCodeBtn">Copy</button>
+        <button type="button" class="codeIconBtn" id="closeCodeBtn" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div class="codeBody">
+      <p class="codeHint">Set your own deployment URL and the JWT token returned after signing in to your deployment, then run the request from your machine.</p>
+      <pre><code id="codeBlock"></code></pre>
+      <div class="codeSafety">No deployment domain or runtime credential is embedded in this showcase.</div>
+    </div>
+  </div>
+</div>
+
+<footer><div class="wrap">Rails 8 AI Image Processing API · Visual Showcase · No runtime credentials or deployment URL embedded in this page.</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script>
+
+const VI = {
+"Background removal":"Xóa nền",
+"Object selection":"Chọn đối tượng",
+"Transforms":"Biến đổi ảnh",
+"Gallery":"Thư viện",
+"Real API outputs":"Kết quả thật từ API",
+"AI-powered image processing behind one Rails 8 API.":"Xử lý hình ảnh bằng AI phía sau một Rails 8 API duy nhất.",
+"Remove backgrounds, select people or objects, and transform images through simple API requests. Every example below uses a real API response so you can see what each capability actually does.":"Xóa nền, chọn người hoặc vật thể và biến đổi ảnh thông qua các API request đơn giản. Mỗi ví dụ bên dưới đều dùng response thật từ API để bạn có thể nhìn thấy ngay từng tính năng thực sự làm được gì.",
+"See what the API can do":"Xem API làm được gì",
+"Application source":"Mã nguồn ứng dụng",
+"Keep the subject, remove the background":"Giữ chủ thể, xóa phần nền",
+"Select a person or object from a click or box":"Chọn người hoặc vật thể bằng một cú nhấp hoặc khung bao",
+"Resize, crop and enhance predictably":"Resize, crop và tăng cường ảnh với kết quả xác định",
+"One API surface for the workflow":"Một API duy nhất cho toàn bộ workflow",
+"Original":"Ảnh gốc",
+"Background removed and replaced with a neutral backdrop":"Nền đã được xóa và thay bằng nền trung tính",
+"Drag to compare":"Kéo để so sánh",
+"Keep the product. Remove the scene around it.":"Giữ sản phẩm. Loại bỏ khung cảnh xung quanh.",
+"BiRefNet separates the main subject from its surroundings. The API can return a transparent PNG or place the isolated subject onto a new background.":"BiRefNet tách chủ thể chính khỏi phần xung quanh. API có thể trả về PNG nền trong suốt hoặc đặt chủ thể đã tách lên một nền mới.",
+"Input":"Đầu vào",
+"Original photo":"Ảnh gốc",
+"The speakers are still part of their original scene.":"Cặp loa vẫn nằm trong khung cảnh ban đầu.",
+"Transparent cutout":"Chủ thể nền trong suốt",
+"The surrounding background is removed while the product remains.":"Phần nền xung quanh được loại bỏ trong khi sản phẩm được giữ lại.",
+"Composite":"Ảnh ghép",
+"New neutral background":"Nền trung tính mới",
+"The isolated product is placed onto a clean neutral background.":"Sản phẩm đã tách được đặt lên một nền trung tính sạch.",
+"Another object shape":"Một hình dạng vật thể khác",
+"The same background-removal API on a different object.":"Cùng API xóa nền nhưng áp dụng trên một vật thể khác.",
+"The hat has a wider curved outline, showing how the same endpoint handles a different shape and material.":"Chiếc mũ có đường viền cong rộng hơn, cho thấy cùng endpoint xử lý một hình dạng và vật liệu khác như thế nào.",
+"Original hat photo":"Ảnh mũ gốc",
+"Large curved silhouette on a textured wooden background.":"Một vật thể có đường viền cong lớn trên nền gỗ có kết cấu.",
+"Transparent hat cutout":"Cutout mũ nền trong suốt",
+"A second object-removal case with a substantially different outline.":"Một ví dụ xóa nền thứ hai với đường viền khác đáng kể.",
+"Neutral editorial backdrop":"Nền trung tính kiểu biên tập",
+"Feathered output recomposited onto a clean neutral background.":"Kết quả được feather rồi ghép lại trên một nền trung tính sạch.",
+"Object selection with MobileSAM":"Chọn đối tượng với MobileSAM",
+"Tell the API what you want to select.":"Cho API biết bạn muốn chọn gì.",
+"MobileSAM does not remove the background here. It answers a different question: which pixels belong to the subject selected by the user?":"Ở phần này MobileSAM không xóa nền. Nó trả lời một câu hỏi khác: những pixel nào thuộc về đối tượng mà người dùng đã chọn?",
+"Selection preview":"Xem vùng được chọn",
+"Mask":"Mask",
+"Select with one click":"Chọn bằng một cú nhấp",
+"A positive point placed on the puppy tells MobileSAM which nearby subject the user wants. The middle preview keeps the selected subject bright; the black-and-white image is the raw mask returned by the API.":"Một positive point đặt trên chú chó cho MobileSAM biết người dùng muốn chọn đối tượng nào ở gần điểm đó. Ảnh ở giữa giữ vùng được chọn sáng rõ; ảnh đen trắng là raw mask do API trả về.",
+"Why show both a preview and a mask?":"Tại sao hiển thị cả preview và mask?",
+"The preview is for people: it makes the selected subject obvious at a glance. The mask is for software: it is the actual pixel-level output that downstream image-editing logic can use.":"Preview dành cho người xem: chỉ cần nhìn là biết ngay chủ thể nào được chọn. Mask dành cho phần mềm: đây là output ở cấp độ pixel để các bước chỉnh sửa ảnh phía sau có thể sử dụng.",
+"People as another subject type":"Người là một loại chủ thể khác",
+"Background removal and object selection are different tasks.":"Xóa nền và chọn đối tượng là hai tác vụ khác nhau.",
+"On this portrait, BiRefNet replaces the background while MobileSAM returns a mask that marks the selected person.":"Trong ảnh chân dung này, BiRefNet thay phần nền còn MobileSAM trả về mask đánh dấu người đã được chọn.",
+"Person":"Người",
+"One portrait, two different tasks":"Một ảnh chân dung, hai tác vụ khác nhau",
+"BiRefNet changes the background. MobileSAM identifies which pixels belong to the person.":"BiRefNet thay đổi phần nền. MobileSAM xác định những pixel nào thuộc về người trong ảnh.",
+"Original cat photo":"Ảnh mèo gốc",
+"Cat box-selection preview":"Preview lựa chọn mèo bằng box",
+"Actual MobileSAM cat box mask":"Mask box thực tế của mèo từ MobileSAM",
+"Select the cat with a bounding box":"Chọn mèo bằng khung bao",
+"The box surrounds the cat and gives MobileSAM a spatial region to search. This is a different subject and a different interaction from the puppy's single-click example.":"Khung bao ôm quanh con mèo và cung cấp cho MobileSAM một vùng không gian để tìm chủ thể. Đây là chủ thể khác và cách tương tác khác với ví dụ nhấp một điểm trên chú chó.",
+"View code":"Xem code",
+"View BiRefNet code":"Xem code BiRefNet",
+"View MobileSAM code":"Xem code MobileSAM",
+"API example":"Ví dụ API",
+"Copy":"Sao chép",
+"Set your own deployment URL and the JWT token returned after signing in to your deployment, then run the request from your machine.":"Thiết lập URL deployment của bạn và JWT token nhận được sau khi đăng nhập vào deployment, sau đó chạy request từ máy của bạn.",
+"No deployment domain or runtime credential is embedded in this showcase.":"Showcase này không nhúng domain deployment hay runtime credential.",
+"Three animals. Three clear selection examples.":"Ba loài vật. Ba ví dụ lựa chọn rõ ràng.",
+"These examples separate the interaction from the result: the first image shows the prompt you give MobileSAM, the second highlights what the model selected, and the third is the raw black-and-white mask returned by the API.":"Các ví dụ này tách rõ thao tác và kết quả: ảnh đầu tiên cho thấy prompt đưa vào MobileSAM, ảnh thứ hai làm nổi bật vùng model đã chọn, và ảnh thứ ba là raw mask đen trắng mà API trả về.",
+"1 · Point prompt":"1 · Point prompt",
+"2 · Selection":"2 · Vùng được chọn",
+"3 · API mask":"3 · API mask",
+"Dog · Point":"Chó · Point",
+"Choose a subject with one click":"Chọn chủ thể bằng một cú nhấp",
+"A single positive point tells MobileSAM which nearby object the user means. This is the simplest interaction for a click-to-select interface.":"Một positive point cho MobileSAM biết người dùng muốn chọn vật thể nào ở gần điểm đó. Đây là kiểu tương tác đơn giản nhất cho giao diện nhấp để chọn.",
+"1 · Box prompt":"1 · Box prompt",
+"Cat · Box":"Mèo · Box",
+"Choose a subject with a bounding box":"Chọn chủ thể bằng khung bao",
+"The box narrows the search region around the cat. This interaction fits crop tools, annotation UIs, and workflows where the user can drag a rectangle.":"Khung bao thu hẹp vùng tìm kiếm quanh con mèo. Kiểu tương tác này phù hợp với công cụ crop, giao diện annotation và workflow nơi người dùng có thể kéo một hình chữ nhật.",
+"Horse · Point":"Ngựa · Point",
+"Select one animal from a busier scene":"Chọn một con vật trong khung cảnh có nhiều chủ thể",
+"Several horses are visible, but the positive point targets the white horse in front. This makes the purpose of a prompt much clearer than an image containing only one obvious subject.":"Trong ảnh có nhiều con ngựa, nhưng positive point nhắm vào con ngựa trắng phía trước. Điều này làm mục đích của prompt rõ ràng hơn nhiều so với ảnh chỉ có một chủ thể hiển nhiên.",
+"How to read these examples.":"Cách đọc các ví dụ này.",
+"The prompt image shows what the user provides. The selection preview is only a visual aid for this showcase. The black-and-white mask is the actual pixel-level MobileSAM output used by downstream code.":"Ảnh prompt cho thấy dữ liệu người dùng cung cấp. Selection preview chỉ là lớp minh họa trực quan cho showcase. Mask đen trắng mới là output MobileSAM ở cấp độ pixel mà code phía sau sử dụng.",
+"A human subject":"Một chủ thể là người",
+"Background removal and segmentation solve different problems.":"Xóa nền và segmentation giải quyết hai bài toán khác nhau.",
+"The same portrait makes the distinction easy to see: BiRefNet changes the scene around the person, while MobileSAM identifies the pixels that belong to the person.":"Cùng một ảnh chân dung giúp thấy rõ sự khác biệt: BiRefNet thay đổi khung cảnh quanh người, còn MobileSAM xác định những pixel thuộc về người đó.",
+"MobileSAM mask":"MobileSAM mask",
+"One photo, two different AI tasks":"Một bức ảnh, hai tác vụ AI khác nhau",
+"Use background removal when you want a cutout or a new scene. Use segmentation when you need a mask that tells software exactly which pixels belong to the selected subject.":"Dùng xóa nền khi bạn cần cutout hoặc một khung cảnh mới. Dùng segmentation khi bạn cần mask để phần mềm biết chính xác pixel nào thuộc về chủ thể đã chọn.",
+"Person background replacement":"Thay nền cho người",
+"Person segmentation mask":"Mask segmentation người",
+"Dog point selection":"Chọn chó bằng point",
+"Cat box selection":"Chọn mèo bằng box",
+"Horse point selection":"Chọn ngựa bằng point",
+"Predictable image transformations":"Các phép biến đổi ảnh có kết quả xác định",
+"Resize, crop, enhance, and export predictably.":"Resize, crop, tăng cường và xuất ảnh với kết quả ổn định.",
+"These operations do not use an AI model. libvips performs repeatable resize, crop, color, sharpening, tint, and WebP transformations.":"Các thao tác này không dùng model AI. libvips thực hiện các phép resize, crop, chỉnh màu, làm nét, tint và xuất WebP theo cách lặp lại được.",
+"Food":"Ẩm thực",
+"Social-ready square crop":"Ảnh vuông cho mạng xã hội",
+"Resize-to-fill plus restrained contrast, saturation, sharpening, and WebP output.":"Resize-to-fill, điều chỉnh contrast và saturation vừa phải, làm nét và xuất WebP.",
+"Travel":"Du lịch",
+"Cinematic hero image":"Ảnh hero tỉ lệ điện ảnh",
+"A 16:9 crop with subtle tonal enhancement for web hero placement.":"Crop 16:9 với điều chỉnh tông màu nhẹ để dùng làm ảnh hero trên web.",
+"Architecture":"Kiến trúc",
+"Warm":"Tông ấm",
+"Warm editorial treatment":"Xử lý phong cách biên tập tông ấm",
+"Resize, contrast, restrained tint, sharpening, and WebP export in one request.":"Resize, contrast, tint vừa phải, sharpening và xuất WebP trong một request.",
+"Explore the outputs":"Khám phá kết quả",
+"Open any result at full resolution.":"Mở bất kỳ kết quả nào ở độ phân giải đầy đủ.",
+"Each item opens in a lightbox with zoom, navigation, and its original pixel dimensions.":"Mỗi mục mở trong lightbox, hỗ trợ zoom, chuyển ảnh và hiển thị kích thước pixel gốc.",
+"Transparent cutout":"Cutout nền trong suốt",
+"Soft product composite":"Ảnh ghép sản phẩm",
+"Hat cutout":"Cutout mũ",
+"Hat composite":"Ảnh ghép mũ",
+"Point mask":"Point mask",
+"Box mask":"Box mask",
+"Food enhancement":"Tăng cường ảnh ẩm thực",
+"Travel hero":"Ảnh hero du lịch",
+"Architecture treatment":"Xử lý ảnh kiến trúc",
+"Person isolation":"Tách người",
+"Person box mask":"Mask người bằng box",
+"Dog point mask":"Mask chú chó bằng point",
+"Dog box mask":"Mask chú chó bằng box","Puppy point-selection preview":"Preview chú chó bằng point","Puppy box-selection preview":"Preview chú chó bằng box",
+"About this showcase:":"Về showcase này:",
+"These are real API outputs presented as visual demonstrations, not model-quality benchmarks. Reproducible API tests, verification reports, and integrity evidence are maintained separately in the project's public verification repository.":"Đây là các kết quả thật từ API được trình bày dưới dạng minh họa trực quan, không phải benchmark đánh giá chất lượng model. Các bài kiểm thử API có thể tái lập, báo cáo xác minh và bằng chứng kiểm tra tính toàn vẹn được duy trì riêng trong repository xác minh công khai của dự án.",
+"Verification & reproducibility → Public verification repository":"Xác minh & khả năng tái lập → Repository xác minh công khai",
+"Rails 8 AI Image Processing API · Visual Showcase · No runtime credentials or deployment URL embedded in this page.":"Rails 8 AI Image Processing API · Visual Showcase · Trang này không nhúng runtime credential hay deployment URL."
+};
+const EN_TITLE=document.title;
+const EN_META=document.querySelector('meta[name="description"]').content;
+const textNodes=[];
+const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+while(walker.nextNode()){const n=walker.currentNode;const k=n.nodeValue.trim();if(k && VI[k]) textNodes.push([n,n.nodeValue,k]);}
+const attrs=[...document.querySelectorAll('[data-title]')].map(el=>[el,el.dataset.title]);
+const ATTR_VI={
+"Original product photo":"Ảnh sản phẩm gốc","Transparent PNG output":"Kết quả PNG nền trong suốt","Feathered neutral-background composite":"Ảnh ghép trên nền trung tính",
+"Original puppy photo":"Ảnh chú chó gốc","Point-selection preview":"Preview lựa chọn bằng point","Box-selection preview":"Preview lựa chọn bằng box",
+"Actual MobileSAM point mask":"Mask point thực tế từ MobileSAM","Actual MobileSAM box mask":"Mask box thực tế từ MobileSAM",
+"Person — original CC0 portrait":"Người — ảnh chân dung CC0 gốc","Person — BiRefNet soft-background output":"Người — kết quả BiRefNet với nền mới","Person — MobileSAM box mask":"Người — mask box từ MobileSAM",
+"Pho — original":"Phở — ảnh gốc","Pho — enhanced square crop":"Phở — crop vuông đã tăng cường","Hạ Long — original":"Hạ Long — ảnh gốc","Hạ Long — cinematic 16:9":"Hạ Long — crop điện ảnh 16:9","Tower — original":"Tháp — ảnh gốc","Tower — warm editorial treatment":"Tháp — xử lý biên tập tông ấm","Dog — point prompt":"Chó — point prompt","Dog — selection preview":"Chó — preview vùng được chọn","Dog — MobileSAM point mask":"Chó — point mask từ MobileSAM","Cat — box prompt":"Mèo — box prompt","Cat — selection preview":"Mèo — preview vùng được chọn","Cat — MobileSAM box mask":"Mèo — box mask từ MobileSAM","Horse — point prompt in a multi-horse scene":"Ngựa — point prompt trong cảnh nhiều ngựa","Horse — selection preview":"Ngựa — preview vùng được chọn","Horse — MobileSAM point mask":"Ngựa — point mask từ MobileSAM","Person — BiRefNet background replacement":"Người — thay nền bằng BiRefNet","Dog — point selection preview":"Chó — preview lựa chọn bằng point","Cat — box selection preview":"Mèo — preview lựa chọn bằng box","Horse — point selection preview":"Ngựa — preview lựa chọn bằng point","Hat — original photo":"Mũ — ảnh gốc","Hat — transparent PNG":"Mũ — PNG nền trong suốt","Hat — soft neutral composite":"Mũ — ảnh ghép nền trung tính","Dog — original CC0 photo":"Chú chó — ảnh CC0 gốc","Dog — MobileSAM point mask":"Chú chó — mask point từ MobileSAM","Dog — MobileSAM box mask":"Chú chó — mask box từ MobileSAM","Puppy — point selection preview":"Chú chó — preview lựa chọn bằng point","Puppy — box selection preview":"Chú chó — preview lựa chọn bằng box","BiRefNet — transparent product cutout":"BiRefNet — cutout sản phẩm nền trong suốt","BiRefNet — soft catalog background":"BiRefNet — nền catalog trung tính","Hat — transparent object cutout":"Mũ — cutout vật thể nền trong suốt","Hat — soft neutral composite":"Mũ — ảnh ghép nền trung tính","Person — BiRefNet soft-background output":"Người — kết quả BiRefNet với nền mới","Person — MobileSAM box mask":"Người — mask box từ MobileSAM","Pho — enhanced square crop":"Phở — crop vuông đã tăng cường","Hạ Long — cinematic crop":"Hạ Long — crop điện ảnh","Tower — warm editorial treatment":"Tháp — xử lý biên tập tông ấm"
+};
+function setLanguage(lang){
+ document.documentElement.lang=lang;
+ for(const [n,original,key] of textNodes){n.nodeValue=lang==='vi'?original.replace(key,VI[key]):original;}
+ for(const [el,title] of attrs){el.dataset.title=lang==='vi'?(ATTR_VI[title]||title):title;}
+ document.title=lang==='vi'?'Rails 8 AI Image Processing API — Trình diễn trực quan':EN_TITLE;
+ document.querySelector('meta[name="description"]').content=lang==='vi'?'Showcase song ngữ cho Rails 8 AI Image Processing API: xóa nền, chọn đối tượng và biến đổi ảnh xác định.':EN_META;
+ document.querySelectorAll('.langSwitch button').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+ localStorage.setItem('showcase-lang',lang);
+}
+document.querySelectorAll('.langSwitch button').forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));
+setLanguage(localStorage.getItem('showcase-lang')||'en');
+
+
+const CODE_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m8 9-3 3 3 3"/><path d="m16 9 3 3-3 3"/><path d="m14 5-4 14"/></svg>';
+document.querySelectorAll('.codeBtn').forEach(b=>{if(!b.querySelector('svg'))b.insertAdjacentHTML('afterbegin',CODE_ICON)});
+const CODE_EXAMPLES={
+'remove-background':{
+ title:'BiRefNet · transparent product cutout', titleVi:'BiRefNet · cutout sản phẩm nền trong suốt',
+ code:`# Use your own deployment URL and JWT token
+BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/remove-background" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@speaker-pair.jpg" \
+  -F "output=transparent" \
+  -F "format=png" \
+  -F "feather=0" \
+  --output speaker-transparent.png`
+},
+'speaker-soft-background':{
+ title:'BiRefNet · speaker pair · neutral background', titleVi:'BiRefNet · cặp loa · nền trung tính',
+ code:`# Remove the original background, feather the edge, then composite a neutral background.
+BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/remove-background" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@speaker-pair.jpg" \
+  -F "output=transparent" \
+  -F "format=png" \
+  -F "background=#F4F1EA" \
+  -F "feather=3" \
+  --output speaker-soft-background.png`
+},
+'hat-transparent':{
+ title:'BiRefNet · hat · transparent cutout', titleVi:'BiRefNet · mũ · cutout nền trong suốt',
+ code:`BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/remove-background" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@hat.jpg" \
+  -F "output=transparent" \
+  -F "format=png" \
+  -F "feather=0" \
+  --output hat-transparent.png`
+},
+'hat-soft-background':{
+ title:'BiRefNet · hat · neutral background', titleVi:'BiRefNet · mũ · nền trung tính',
+ code:`BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/remove-background" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@hat.jpg" \
+  -F "output=transparent" \
+  -F "format=png" \
+  -F "background=#F4F1EA" \
+  -F "feather=3" \
+  --output hat-soft-background.png`
+},
+'dog-point':{
+ title:'MobileSAM · dog · point prompt', titleVi:'MobileSAM · chó · point prompt',
+ code:`# One positive click selects the nearby subject.
+BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/segment" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@dog.jpg" \
+  -F 'prompt={"type":"point","x":426,"y":660,"label":1}' \
+  --output dog-point-mask.png`
+},
+'cat-box':{
+ title:'MobileSAM · cat · box prompt', titleVi:'MobileSAM · mèo · box prompt',
+ code:`# A bounding box tells the model which region contains the subject.
+BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/segment" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@cat.png" \
+  -F 'prompt={"type":"box","x0":105,"y0":10,"x1":670,"y1":500}' \
+  --output cat-box-mask.png`
+},
+'horse-point':{
+ title:'MobileSAM · horse · point prompt', titleVi:'MobileSAM · ngựa · point prompt',
+ code:`# The positive point targets the foreground horse in a multi-horse scene.
+BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/segment" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@horse.jpg" \
+  -F 'prompt={"type":"point","x":500,"y":650,"label":1}' \
+  --output horse-point-mask.png`
+},
+'person-background':{
+ title:'BiRefNet · person · background replacement', titleVi:'BiRefNet · người · thay nền',
+ code:`BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/remove-background" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@person.jpg" \
+  -F "output=transparent" \
+  -F "format=png" \
+  -F "background=#F4F1EA" \
+  -F "feather=3" \
+  --output person-soft-background.png`
+},
+'person-segmentation':{
+ title:'MobileSAM · person · box prompt', titleVi:'MobileSAM · người · box prompt',
+ code:`BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/segment" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@person.jpg" \
+  -F 'prompt={"type":"box","x0":75,"y0":155,"x1":805,"y1":1260}' \
+  --output person-box-mask.png`
+},
+'process-food':{
+ title:'libvips · food · square social crop', titleVi:'libvips · ẩm thực · crop vuông mạng xã hội',
+ code:`BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/process" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@pho.png" \
+  -F 'operations=[{"op":"resize_to_fill","width":720,"height":720},{"op":"contrast","amount":0.10},{"op":"saturation","amount":0.10},{"op":"sharpen","amount":0.35}]' \
+  -F "format=webp" \
+  -F "quality=90" \
+  --output pho-enhanced.webp`
+},
+'process-travel':{
+ title:'libvips · travel · cinematic hero', titleVi:'libvips · du lịch · ảnh hero điện ảnh',
+ code:`BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/process" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@halong.png" \
+  -F 'operations=[{"op":"resize_to_fill","width":960,"height":540},{"op":"contrast","amount":0.12},{"op":"saturation","amount":0.14},{"op":"sharpen","amount":0.25}]' \
+  -F "format=webp" \
+  -F "quality=90" \
+  --output halong-cinematic.webp`
+},
+'process-architecture':{
+ title:'libvips · architecture · warm editorial treatment', titleVi:'libvips · kiến trúc · xử lý biên tập tông ấm',
+ code:`BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/process" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@tower.png" \
+  -F 'operations=[{"op":"resize_to_fill","width":960,"height":540},{"op":"contrast","amount":0.08},{"op":"tint","color":"#F6B26B","strength":0.12},{"op":"sharpen","amount":0.30}]' \
+  -F "format=webp" \
+  -F "quality=90" \
+  --output tower-warm.webp`
+}
+};
+const modal=document.getElementById('codeModal');
+const codeBlock=document.getElementById('codeBlock');
+const modalTitle=document.getElementById('codeModalTitle');
+const openCode=id=>{const item=CODE_EXAMPLES[id];if(!item)return;modalTitle.textContent=document.documentElement.lang==='vi'?(item.titleVi||item.title):item.title;codeBlock.textContent=item.code;modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'};
+const closeCode=()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow=''};
+document.querySelectorAll('.codeBtn').forEach(b=>b.addEventListener('click',()=>openCode(b.dataset.code)));
+document.getElementById('closeCodeBtn').addEventListener('click',closeCode);
+modal.addEventListener('click',e=>{if(e.target===modal)closeCode()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeCode()});
+document.getElementById('copyCodeBtn').addEventListener('click',async()=>{await navigator.clipboard.writeText(codeBlock.textContent);const b=document.getElementById('copyCodeBtn');const old=b.textContent;b.textContent=document.documentElement.lang==='vi'?'Đã chép':'Copied';setTimeout(()=>b.textContent=old,1200)});
+
+const lightboxItems=[...document.querySelectorAll('.glightbox')];
+const annotateResolution=a=>new Promise(resolve=>{
+  const img=new Image();
+  img.onload=()=>{
+    const base=a.dataset.description||'';
+    const resolution='Resolution: '+img.naturalWidth+' × '+img.naturalHeight+' px';
+    a.dataset.description=base ? base+' · '+resolution : resolution;
+    resolve();
+  };
+  img.onerror=resolve;
+  img.src=a.href;
+});
+Promise.all(lightboxItems.map(annotateResolution)).finally(()=>{
+  GLightbox({
+    selector:'.glightbox',
+    touchNavigation:true,
+    loop:true,
+    zoomable:true,
+    draggable:true,
+    descPosition:'bottom'
+  });
+});
+
+const c=document.getElementById('heroCompare');
+let activePointer=null;
+const updateSlider=e=>{
+  const r=c.getBoundingClientRect();
+  const x=Math.max(0,Math.min(r.width,e.clientX-r.left));
+  const p=x/r.width*100;
+  c.querySelector('.after').style.clipPath='inset(0 0 0 '+p+'%)';
+  c.querySelector('.divider').style.left=p+'%';
+  c.querySelector('.knob').style.left=p+'%';
+};
+c.addEventListener('pointerdown',e=>{
+  e.preventDefault();
+  activePointer=e.pointerId;
+  c.setPointerCapture(e.pointerId);
+  updateSlider(e);
+});
+c.addEventListener('pointermove',e=>{
+  if(activePointer!==e.pointerId)return;
+  e.preventDefault();
+  updateSlider(e);
+});
+const endSlider=e=>{
+  if(activePointer!==e.pointerId)return;
+  if(c.hasPointerCapture(e.pointerId))c.releasePointerCapture(e.pointerId);
+  activePointer=null;
+};
+c.addEventListener('pointerup',endSlider);
+c.addEventListener('pointercancel',endSlider);
+c.addEventListener('lostpointercapture',()=>{activePointer=null});
+c.addEventListener('selectstart',e=>e.preventDefault());
+c.addEventListener('dragstart',e=>e.preventDefault());
+</script>
+</body>
+</html>
