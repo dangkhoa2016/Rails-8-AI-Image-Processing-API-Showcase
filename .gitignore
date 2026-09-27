@@ -1,0 +1,15 @@
+# Runtime credentials and local environment files
+.env
+.env.*
+*.token
+*.secret
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local preview/runtime artifacts
+*.log
+site/.DS_Store
