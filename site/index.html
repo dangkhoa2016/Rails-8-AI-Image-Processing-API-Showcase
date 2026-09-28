@@ -50,21 +50,21 @@ section{padding:58px 0}.sectionHead{display:flex;justify-content:space-between;g
   </div>
   <div class="heroCard">
     <div class="compare" id="heroCompare">
-      <img src="assets/speaker-input.jpg" alt="Original speaker pair">
-      <img class="after" src="assets/speaker-soft-background.png" alt="Speaker pair after BiRefNet background removal">
+      <img src="assets/hero-person-input.jpg" alt="Original outdoor portrait">
+      <img class="after" src="assets/hero-person-soft-background.png" alt="Portrait after BiRefNet background replacement">
       <div class="divider"></div><div class="knob">↔</div>
       <div class="labels"><span>Original</span><span>BiRefNet</span></div>
     </div>
-    <div class="heroMeta"><span>Background removed and replaced with a neutral backdrop</span><span>Drag to compare</span><button type="button" class="codeBtn" data-code="speaker-soft-background">View code</button></div>
+    <div class="heroMeta"><span>Background removed and refined for a studio-ready portrait</span><span>Drag to compare</span><button type="button" class="codeBtn" data-code="hero-person-background">View code</button></div>
   </div>
 </section>
 
 <section id="background">
   <div class="sectionHead"><div><div class="eyebrow">Background removal</div><h2>Keep the product. Remove the scene around it.</h2></div><p>BiRefNet separates the main subject from its surroundings. The API can return a transparent PNG or place the isolated subject onto a new background.</p></div>
   <div class="galleryGrid bgTriptych">
-    <article class="card"><a class="zoom glightbox" data-gallery="background" data-title="Original product photo" href="assets/speaker-input.jpg"><img src="assets/speaker-input.jpg" alt="Original speaker pair"></a><div class="cardBody"><span class="tag">Input</span><h3>Original photo</h3><p>The speakers are still part of their original scene.</p></div></article>
-    <article class="card"><a class="zoom glightbox checker" data-gallery="background" data-title="Transparent PNG output" href="assets/speaker-transparent.png"><img src="assets/speaker-transparent.png" alt="Transparent speaker-pair output"></a><div class="cardBody"><span class="tag">BiRefNet</span><h3>Transparent cutout</h3><p>The surrounding background is removed while the product remains.</p><button type="button" class="codeBtn" data-code="remove-background">View code</button></div></article>
-    <article class="card"><a class="zoom glightbox" data-gallery="background" data-title="Feathered neutral-background composite" href="assets/speaker-soft-background.png"><img src="assets/speaker-soft-background.png" alt="Speaker pair on soft background"></a><div class="cardBody"><span class="tag">Composite</span><h3>New neutral background</h3><p>The isolated product is placed onto a clean neutral background.</p><button type="button" class="codeBtn" data-code="speaker-soft-background">View code</button></div></article>
+    <article class="card"><a class="zoom glightbox" data-gallery="background" data-title="Chair — original room photo" href="assets/chair-input.jpg"><img src="assets/chair-input.jpg" alt="Original chair in a room"></a><div class="cardBody"><span class="tag">Input</span><h3>Original product photo</h3><p>The chair is still surrounded by its original wall and floor.</p></div></article>
+    <article class="card"><a class="zoom glightbox checker" data-gallery="background" data-title="Chair — transparent PNG output" href="assets/chair-transparent.png"><img src="assets/chair-transparent.png" alt="Transparent chair cutout"></a><div class="cardBody"><span class="tag">BiRefNet</span><h3>Transparent cutout</h3><p>The wall and floor disappear while the chair silhouette remains.</p><button type="button" class="codeBtn" data-code="chair-transparent">View code</button></div></article>
+    <article class="card"><a class="zoom glightbox" data-gallery="background" data-title="Chair — feathered neutral-background composite" href="assets/chair-soft-background.png"><img src="assets/chair-soft-background.png" alt="Chair on a soft neutral background"></a><div class="cardBody"><span class="tag">Composite</span><h3>Catalog-ready background</h3><p>The isolated chair is recomposited onto a clean neutral backdrop.</p><button type="button" class="codeBtn" data-code="chair-soft-background">View code</button></div></article>
   </div>
   <div style="height:48px"></div>
   <div class="sectionHead"><div><div class="eyebrow">Another object shape</div><h2>The same background-removal API on a different object.</h2></div><p>The hat has a wider curved outline, showing how the same endpoint handles a different shape and material.</p></div>
@@ -198,18 +198,18 @@ const VI = {
 "Resize, crop and enhance predictably":"Resize, crop và tăng cường ảnh với kết quả xác định",
 "One API surface for the workflow":"Một API duy nhất cho toàn bộ workflow",
 "Original":"Ảnh gốc",
-"Background removed and replaced with a neutral backdrop":"Nền đã được xóa và thay bằng nền trung tính",
+"Background removed and refined for a studio-ready portrait":"Nền được xóa và tinh chỉnh để tạo chân dung sẵn sàng cho trình bày chuyên nghiệp",
 "Drag to compare":"Kéo để so sánh",
 "Keep the product. Remove the scene around it.":"Giữ sản phẩm. Loại bỏ khung cảnh xung quanh.",
 "BiRefNet separates the main subject from its surroundings. The API can return a transparent PNG or place the isolated subject onto a new background.":"BiRefNet tách chủ thể chính khỏi phần xung quanh. API có thể trả về PNG nền trong suốt hoặc đặt chủ thể đã tách lên một nền mới.",
 "Input":"Đầu vào",
 "Original photo":"Ảnh gốc",
-"The speakers are still part of their original scene.":"Cặp loa vẫn nằm trong khung cảnh ban đầu.",
+"Original product photo":"Ảnh sản phẩm gốc","The chair is still surrounded by its original wall and floor.":"Chiếc ghế vẫn nằm trong bối cảnh tường và sàn ban đầu.",
 "Transparent cutout":"Chủ thể nền trong suốt",
-"The surrounding background is removed while the product remains.":"Phần nền xung quanh được loại bỏ trong khi sản phẩm được giữ lại.",
+"The wall and floor disappear while the chair silhouette remains.":"Tường và sàn được loại bỏ trong khi đường nét của chiếc ghế vẫn được giữ lại.",
 "Composite":"Ảnh ghép",
-"New neutral background":"Nền trung tính mới",
-"The isolated product is placed onto a clean neutral background.":"Sản phẩm đã tách được đặt lên một nền trung tính sạch.",
+"Catalog-ready background":"Nền sẵn sàng cho catalog",
+"The isolated chair is recomposited onto a clean neutral backdrop.":"Chiếc ghế đã tách được ghép lại trên một nền trung tính sạch.",
 "Another object shape":"Một hình dạng vật thể khác",
 "The same background-removal API on a different object.":"Cùng API xóa nền nhưng áp dụng trên một vật thể khác.",
 "The hat has a wider curved outline, showing how the same endpoint handles a different shape and material.":"Chiếc mũ có đường viền cong rộng hơn, cho thấy cùng endpoint xử lý một hình dạng và vật liệu khác như thế nào.",
@@ -315,7 +315,7 @@ const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
 while(walker.nextNode()){const n=walker.currentNode;const k=n.nodeValue.trim();if(k && VI[k]) textNodes.push([n,n.nodeValue,k]);}
 const attrs=[...document.querySelectorAll('[data-title]')].map(el=>[el,el.dataset.title]);
 const ATTR_VI={
-"Original product photo":"Ảnh sản phẩm gốc","Transparent PNG output":"Kết quả PNG nền trong suốt","Feathered neutral-background composite":"Ảnh ghép trên nền trung tính",
+"Original product photo":"Ảnh sản phẩm gốc","Transparent PNG output":"Kết quả PNG nền trong suốt","Feathered neutral-background composite":"Ảnh ghép trên nền trung tính","Chair — original room photo":"Ghế — ảnh gốc trong phòng","Chair — transparent PNG output":"Ghế — kết quả PNG nền trong suốt","Chair — feathered neutral-background composite":"Ghế — ảnh ghép trên nền trung tính",
 "Original puppy photo":"Ảnh chú chó gốc","Point-selection preview":"Preview lựa chọn bằng point","Box-selection preview":"Preview lựa chọn bằng box",
 "Actual MobileSAM point mask":"Mask point thực tế từ MobileSAM","Actual MobileSAM box mask":"Mask box thực tế từ MobileSAM",
 "Person — original CC0 portrait":"Người — ảnh chân dung CC0 gốc","Person — BiRefNet soft-background output":"Người — kết quả BiRefNet với nền mới","Person — MobileSAM box mask":"Người — mask box từ MobileSAM",
@@ -337,34 +337,48 @@ setLanguage(localStorage.getItem('showcase-lang')||'en');
 const CODE_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m8 9-3 3 3 3"/><path d="m16 9 3 3-3 3"/><path d="m14 5-4 14"/></svg>';
 document.querySelectorAll('.codeBtn').forEach(b=>{if(!b.querySelector('svg'))b.insertAdjacentHTML('afterbegin',CODE_ICON)});
 const CODE_EXAMPLES={
-'remove-background':{
- title:'BiRefNet · transparent product cutout', titleVi:'BiRefNet · cutout sản phẩm nền trong suốt',
+'hero-person-background':{
+ title:'BiRefNet · portrait · neutral background', titleVi:'BiRefNet · chân dung · nền trung tính',
+ code:`BASE_URL="\${BASE_URL:?Set BASE_URL}"
+YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
+
+curl -sS -X POST "$BASE_URL/images/remove-background" \
+  -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
+  -F "image=@hero-person.jpg" \
+  -F "output=transparent" \
+  -F "format=png" \
+  -F "background=#F4F1EA" \
+  -F "feather=3" \
+  --output hero-person-soft-background.png`
+},
+'chair-transparent':{
+ title:'BiRefNet · chair · transparent cutout', titleVi:'BiRefNet · ghế · cutout nền trong suốt',
  code:`# Use your own deployment URL and JWT token
 BASE_URL="\${BASE_URL:?Set BASE_URL}"
 YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
 
 curl -sS -X POST "$BASE_URL/images/remove-background" \
   -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
-  -F "image=@speaker-pair.jpg" \
+  -F "image=@chair.jpg" \
   -F "output=transparent" \
   -F "format=png" \
   -F "feather=0" \
-  --output speaker-transparent.png`
+  --output chair-transparent.png`
 },
-'speaker-soft-background':{
- title:'BiRefNet · speaker pair · neutral background', titleVi:'BiRefNet · cặp loa · nền trung tính',
+'chair-soft-background':{
+ title:'BiRefNet · chair · neutral background', titleVi:'BiRefNet · ghế · nền trung tính',
  code:`# Remove the original background, feather the edge, then composite a neutral background.
 BASE_URL="\${BASE_URL:?Set BASE_URL}"
 YOUR_AUTHENTICATION_LOGIN_TOKEN="\${YOUR_AUTHENTICATION_LOGIN_TOKEN:?Set YOUR_AUTHENTICATION_LOGIN_TOKEN}"
 
 curl -sS -X POST "$BASE_URL/images/remove-background" \
   -H "Authorization: Bearer $YOUR_AUTHENTICATION_LOGIN_TOKEN" \
-  -F "image=@speaker-pair.jpg" \
+  -F "image=@chair.jpg" \
   -F "output=transparent" \
   -F "format=png" \
   -F "background=#F4F1EA" \
   -F "feather=3" \
-  --output speaker-soft-background.png`
+  --output chair-soft-background.png`
 },
 'hat-transparent':{
  title:'BiRefNet · hat · transparent cutout', titleVi:'BiRefNet · mũ · cutout nền trong suốt',

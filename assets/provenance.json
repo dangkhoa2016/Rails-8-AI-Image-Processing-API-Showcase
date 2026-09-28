@@ -87,6 +87,28 @@
       "sha256": "1e38ce7fd433f1ee0a8a6f8220d59db5a9011b602a970eb96bcd13a7cbdc2fce",
       "runtime_file": "assets/input/hat-white-cowboy-cc0-1280.jpg",
       "runtime_sha256": "10126b38d7a82ed7cc7e1a9a85023b42f9f1a15053caeb2a1396490920abc5ec"
+    },
+    {
+      "file": "assets/input/hero-person-cc0.jpg",
+      "role": "showcase-input",
+      "source_type": "wikimedia-commons",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Outdoors-man-portrait.jpg",
+      "license": "CC0 1.0",
+      "description": "Outdoor half-body portrait of a man with crossed arms",
+      "sha256": "9efa1809e45e462dee58d9b9d22eb1ffed7f555b2b9da6a7b397336f1f46dfd6",
+      "runtime_file": "assets/input/hero-person-cc0-1280.jpg",
+      "runtime_sha256": "ec7ab902e1335e5c9d5a57ef059ffb305ca55b146e77fe0a20e05e71ec6558f7"
+    },
+    {
+      "file": "assets/input/chair-cc0.jpg",
+      "role": "showcase-input",
+      "source_type": "wikimedia-commons",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Chair.JPG",
+      "license": "CC0 1.0",
+      "description": "Black bentwood-style chair photographed against a wall and carpeted floor",
+      "sha256": "73db796087c551375d7d537ca78c81ede7b106cd8d25e1fad729a29a7b59483c",
+      "runtime_file": "assets/input/chair-cc0-1280.jpg",
+      "runtime_sha256": "e5b401ff26aabe4600c28e45b3f58544d539ea62473afd1b94b5ae0f12879248"
     }
   ]
 }
