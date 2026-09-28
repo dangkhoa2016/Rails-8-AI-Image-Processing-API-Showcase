@@ -1,6 +1,7 @@
 # Runtime credentials and local environment files
 .env
 .env.*
+!.env.example
 *.token
 *.secret
 
